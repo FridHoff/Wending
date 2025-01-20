@@ -54,15 +54,45 @@ while (true)
     }
     else if (command == "GetChange")
     {
+        balance = 0;
     }
     else if (command.StartsWith("BuyGood"))
     {
+        //Разбиение строки на единицы данных
+        string[] rawData = command.Substring("BuyGood ".Length).Split(' ');
+        //Сопоставление этих данных с переменными (и их типами)
+        if (rawData.Length != 2)
+        {
+            Console.WriteLine("Неправильные аргументы команды");
+            break;
+        }
+        int id = Convert.ToInt32(rawData[0]);
+        int count = Convert.ToInt32(rawData[1]);
+        //Проверка корректности этих данных
+        //на основе текущего состояния модели.
+        if (id < 0 || id >= names.Length)
+        {
+            Console.WriteLine("Такого товара нет");
+        break;
+        }
+        if (count < 0 || count >
+        availableQuantity[id])
+        {
+            Console.WriteLine("Нет такого количества");
+        break;
+        }
+        //Выполнение
+        if (balance >= prices[id] * count)
+        {
+            balance -= prices[id] * count;
+            availableQuantity[id] -= count;
+        }
     }
     else
     {
         Console.WriteLine("Команда не определена");
     }
-    Console.ReadLine();
+    Console.ReadKey();
 }
 enum PaymentType
 {
